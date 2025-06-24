@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>CGPA Calculator</title>
+  <title>SGPA Calculator</title>
   <style>
     :root {
       --bg-color: #f4f7fa;
@@ -134,7 +134,7 @@
 
 <body>
   <button class="toggle-btn" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
-  <h1>🎓 CGPA Calculator</h1>
+  <h1>🎓 SGPA Calculator</h1>
 
   <div class="calculator">
     <div id="subjectInputs">
@@ -159,7 +159,7 @@
     </div>
 
     <button onclick="addRow()">+ Add Subject</button>
-    <button onclick="calculateCGPA()">Calculate CGPA</button>
+    <button onclick="calculateSGPA()">Calculate SGPA</button>
     <button onclick="downloadPDF()">📥 Download PDF</button>
 
     <div id="result"></div>
@@ -211,17 +211,17 @@
       btn.parentElement.remove();
     }
 
-    function getPerformance(cgpa) {
-      if (cgpa >= 9) return "Outstanding";
-      if (cgpa >= 8) return "Excellent";
-      if (cgpa >= 7) return "Very Good";
-      if (cgpa >= 6) return "Good";
-      if (cgpa >= 5) return "Average";
-      if (cgpa >= 4) return "Below Average";
+    function getPerformance(sgpa) {
+      if (sgpa >= 9) return "Outstanding";
+      if (sgpa >= 8) return "Excellent";
+      if (sgpa >= 7) return "Very Good";
+      if (sgpa >= 6) return "Good";
+      if (sgpa >= 5) return "Average";
+      if (sgpa >= 4) return "Below Average";
       return "Poor";
     }
 
-    function calculateCGPA() {
+    function calculateSGPA() {
       const subjects = document.querySelectorAll('.subject-name');
       const grades = document.querySelectorAll('.grade');
       const credits = document.querySelectorAll('.credit');
@@ -258,15 +258,15 @@
         return;
       }
 
-      const cgpa = totalPoints / totalCredits;
-      const performance = getPerformance(cgpa);
+      const sgpa = totalPoints / totalCredits;
+      const performance = getPerformance(sgpa);
 
       resultDiv.innerHTML = `
-        <h2>🎯 CGPA: ${cgpa.toFixed(2)}</h2>
+        <h2>🎯 SGPA: ${sgpa.toFixed(2)}</h2>
         <p><strong>📚 Total Courses:</strong> ${courseCount}</p>
         <p><strong>📏 Total Credits:</strong> ${totalCredits}</p>
         <p><strong>📈 Performance:</strong> ${performance}</p>
-        <p><strong>📊 CGPA Breakdown:</strong> You scored ${cgpa.toFixed(2)} CGPA out of a maximum 10.0</p>
+        <p><strong>📊 SGPA Breakdown:</strong> You scored ${sgpa.toFixed(2)} SGPA out of a maximum 10.0</p>
       `;
 
       summaryTable.style.display = 'table';
@@ -274,10 +274,10 @@
 
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
-      calculateCGPA();
+      calculateSGPA();
       const doc = new jsPDF();
       doc.setFontSize(16);
-      doc.text("🎓 CGPA Report", 20, 20);
+      doc.text("🎓 SGPA Report", 20, 20);
 
       const resultText = document.getElementById('result').innerText;
       doc.setFontSize(12);
@@ -294,7 +294,7 @@
         });
       }
 
-      doc.save("cgpa_report.pdf");
+      doc.save("sgpa_report.pdf");
     }
   </script>
 </body>
