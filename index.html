@@ -1,209 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SGPA Calculator</title>
-<style>
-  :root {
-    --bg-color: #f4f7fa;
-    --text-color: #333;
-    --card-color: white;
-    --accent: #2a7ae2;
-    --table-header: #2a7ae2;
-  }
-
-  body.dark-mode {
-    --bg-color: #121212;
-    --text-color: #eee;
-    --card-color: #1e1e1e;
-    --accent: #4a90e2;
-    --table-header: #333;
-  }
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-color);
-    color: var(--text-color);
-    padding: 30px;
-  }
-
-  h1 {
-    text-align: center;
-    color: var(--accent);
-  }
-
-  .calculator {
-    background: var(--card-color);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    margin: 20px auto;
-  }
-
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-  }
-
-  input,
-  select {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-  }
-
-  input.subject-name {
-    flex: 2;
-  }
-
-  input.credit {
-    flex: 1;
-  }
-
-  select.grade {
-    flex: 1;
-  }
-
-  button {
-    padding: 10px 16px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: none;
-    background: var(--accent);
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-bottom: 10px; /* ✅ Adds spacing between buttons */
-  }
-
-  button:hover {
-    filter: brightness(0.9);
-  }
-
-  .delete-btn {
-    background: #e74c3c;
-  }
-
-  .delete-btn:hover {
-    background: #c0392b;
-  }
-
-  #result {
-    background: var(--card-color);
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: var(--card-color);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  th,
-  td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #ccc;
-  }
-
-  th {
-    background: var(--table-header);
-    color: white;
-  }
-
-  .toggle-btn {
-    float: right;
-    background: #444;
-    margin: -50px 20px 20px 0;
-  }
-
-  /* ✅ Fully responsive on mobile */
-  @media (max-width: 768px) {
-    .row {
-      display: block;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2a7ae2" />
+  <link rel="manifest" href="manifest.json">
+  <title>SGPA + CGPA Calculator</title>
+  <style>
+    :root {
+      --bg-color: #f4f7fa;
+      --text-color: #333;
+      --card-color: white;
+      --accent: #2a7ae2;
+      --table-header: #2a7ae2;
     }
 
-    .row > * {
-      width: 100% !important;
-      margin-bottom: 10px;
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --card-color: #1e1e1e;
+      --accent: #4a90e2;
+      --table-header: #333;
     }
 
-    button {
-      width: 100%;
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 30px;
+      margin: 0;
     }
 
-    .toggle-btn {
-      float: none;
-      width: 100%;
-      margin: 10px 0;
+    h1 {
+      text-align: center;
+      color: var(--accent);
     }
 
     .calculator {
-      padding: 15px;
+      background: var(--card-color);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin: 20px auto;
     }
-  }
-</style>
+
+    .row, .semester {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    input,
+    select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input.subject-name {
+      flex: 2;
+    }
+
+    input.credit, input.sgpa, input.total-credit {
+      flex: 1;
+    }
+
+    select.grade {
+      flex: 1;
+    }
+
+    button {
+      padding: 10px 16px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      filter: brightness(0.9);
+    }
+
+    .delete-btn {
+      background: #e74c3c;
+    }
+
+    .delete-btn:hover {
+      background: #c0392b;
+    }
+
+    #result {
+      background: var(--card-color);
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .toggle-btn {
+      display: block;
+      margin: 0 auto 20px auto;
+      background: #444;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-align: center;
+      width: fit-content;
+    }
+
+    @media (max-width: 768px) {
+      .row, .semester {
+        display: block;
+      }
+
+      .row > *, .semester > *, button {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+
+      .toggle-btn {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .calculator {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <button class="toggle-btn" onclick="toggleDarkMode()">🌓 Toggle Dark Mode</button>
-  <h1>🎓 SGPA Calculator</h1>
+  <h1>🎓 SGPA + CGPA Calculator</h1>
 
   <div class="calculator">
+    <h3>🎯 SGPA Calculator</h3>
     <div id="subjectInputs">
       <div class="row">
         <input type="text" placeholder="📘 Subject Name" class="subject-name" />
         <input type="number" placeholder="Credit" class="credit" />
         <select class="grade">
           <option value="">Select Grade</option>
-          <option value="10">A<sup>+</sup></option>
+          <option value="10">A+</option>
           <option value="9">A</option>
-          <option value="8">B<sup>+</sup></option>
+          <option value="8">B+</option>
           <option value="7">B</option>
-          <option value="6">C<sup>+</sup></option>
+          <option value="6">C+</option>
           <option value="5">C</option>
           <option value="4">D</option>
-          <option value="0">E</option>
-          <option value="0">F</option>
-          <option value="0">I</option>
+          <option value="0">E/F/I</option>
         </select>
         <button class="delete-btn" onclick="removeRow(this)">🗑️</button>
       </div>
     </div>
-
     <button onclick="addRow()">+ Add Subject</button>
     <button onclick="calculateSGPA()">Calculate SGPA</button>
-    <button onclick="downloadPDF()">📥 Download PDF</button>
+    <div id="sgpaResult"></div>
 
-    <div id="result"></div>
-
-    <table id="summaryTable" style="display: none;">
-      <thead>
-        <tr>
-          <th>Subject</th>
-          <th>Credit</th>
-          <th>Grade</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <hr>
+    <h3>📊 CGPA Calculator</h3>
+    <div id="cgpaInputs">
+      <div class="semester">
+        <input type="number" placeholder="SGPA" class="sgpa" />
+        <input type="number" placeholder="Total Credits" class="total-credit" />
+        <button class="delete-btn" onclick="removeRow(this)">🗑️</button>
+      </div>
+    </div>
+    <button onclick="addSemester()">+ Add Semester</button>
+    <button onclick="calculateCGPA()">Calculate CGPA</button>
+    <div id="cgpaResult"></div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script>
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
@@ -217,111 +194,89 @@
         <input type="number" placeholder="Credit" class="credit" />
         <select class="grade">
           <option value="">Select Grade</option>
-          <option value="10">A<sup>+</sup></option>
+          <option value="10">A+</option>
           <option value="9">A</option>
-          <option value="8">B<sup>+</sup></option>
+          <option value="8">B+</option>
           <option value="7">B</option>
-          <option value="6">C<sup>+</sup></option>
+          <option value="6">C+</option>
           <option value="5">C</option>
           <option value="4">D</option>
-          <option value="0">E</option>
-          <option value="0">F</option>
-          <option value="0">I</option>
+          <option value="0">E/F/I</option>
         </select>
-        <button class="delete-btn" onclick="removeRow(this)">🗑️</button>
-      `;
+        <button class="delete-btn" onclick="removeRow(this)">🗑️</button>`;
       document.getElementById('subjectInputs').appendChild(row);
+    }
+
+    function addSemester() {
+      const sem = document.createElement('div');
+      sem.className = 'semester';
+      sem.innerHTML = `
+        <input type="number" placeholder="SGPA" class="sgpa" />
+        <input type="number" placeholder="Total Credits" class="total-credit" />
+        <button class="delete-btn" onclick="removeRow(this)">🗑️</button>`;
+      document.getElementById('cgpaInputs').appendChild(sem);
     }
 
     function removeRow(btn) {
       btn.parentElement.remove();
     }
 
-    function getPerformance(sgpa) {
-      if (sgpa >= 9) return "Outstanding";
-      if (sgpa >= 8) return "Excellent";
-      if (sgpa >= 7) return "Very Good";
-      if (sgpa >= 6) return "Good";
-      if (sgpa >= 5) return "Average";
-      if (sgpa >= 4) return "Below Average";
-      return "Poor";
-    }
-
     function calculateSGPA() {
-      const subjects = document.querySelectorAll('.subject-name');
       const grades = document.querySelectorAll('.grade');
       const credits = document.querySelectorAll('.credit');
-      const tableBody = document.querySelector('#summaryTable tbody');
-      tableBody.innerHTML = '';
 
-      let totalPoints = 0, totalCredits = 0, courseCount = 0;
-      let valid = false;
+      let totalPoints = 0, totalCredits = 0;
 
       for (let i = 0; i < grades.length; i++) {
-        const subject = subjects[i].value.trim();
         const gp = parseFloat(grades[i].value);
         const cr = parseFloat(credits[i].value);
-
-        if (!isNaN(gp) && !isNaN(cr) && subject) {
+        if (!isNaN(gp) && !isNaN(cr)) {
           totalPoints += gp * cr;
           totalCredits += cr;
-          courseCount++;
-          valid = true;
-
-          const row = document.createElement('tr');
-          const gradeText = grades[i].options[grades[i].selectedIndex].text;
-          row.innerHTML = `<td>${subject}</td><td>${cr}</td><td>${gradeText}</td>`;
-          tableBody.appendChild(row);
         }
       }
 
-      const resultDiv = document.getElementById('result');
-      const summaryTable = document.getElementById('summaryTable');
-
-      if (!valid || totalCredits === 0) {
-        resultDiv.innerHTML = `<p>Please enter valid subject, grade, and credit.</p>`;
-        summaryTable.style.display = 'none';
-        return;
+      const result = document.getElementById('sgpaResult');
+      if (totalCredits === 0) {
+        result.innerHTML = '<p>Please enter valid subject data.</p>';
+      } else {
+        const sgpa = totalPoints / totalCredits;
+        result.innerHTML = `<h3>🎯 SGPA: ${sgpa.toFixed(2)}</h3>`;
       }
-
-      const sgpa = totalPoints / totalCredits;
-      const performance = getPerformance(sgpa);
-
-      resultDiv.innerHTML = `
-        <h2>🎯 SGPA: ${sgpa.toFixed(2)}</h2>
-        <p><strong>📚 Total Courses:</strong> ${courseCount}</p>
-        <p><strong>📏 Total Credits:</strong> ${totalCredits}</p>
-        <p><strong>📈 Performance:</strong> ${performance}</p>
-        <p><strong>📊 SGPA Breakdown:</strong> You scored ${sgpa.toFixed(2)} SGPA out of a maximum 10.0</p>
-      `;
-
-      summaryTable.style.display = 'table';
     }
 
-    async function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      calculateSGPA();
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text("🎓 SGPA Report", 20, 20);
+    function calculateCGPA() {
+      const sgpas = document.querySelectorAll('.sgpa');
+      const credits = document.querySelectorAll('.total-credit');
 
-      const resultText = document.getElementById('result').innerText;
-      doc.setFontSize(12);
-      doc.text(resultText, 20, 30);
+      let totalPoints = 0, totalCredits = 0;
 
-      const rows = Array.from(document.querySelectorAll("#summaryTable tbody tr"))
-        .map(tr => Array.from(tr.children).map(td => td.innerText));
-
-      if (rows.length > 0) {
-        doc.autoTable({
-          startY: 50,
-          head: [["Subject", "Credit", "Grade"]],
-          body: rows
-        });
+      for (let i = 0; i < sgpas.length; i++) {
+        const sg = parseFloat(sgpas[i].value);
+        const cr = parseFloat(credits[i].value);
+        if (!isNaN(sg) && !isNaN(cr)) {
+          totalPoints += sg * cr;
+          totalCredits += cr;
+        }
       }
 
-      doc.save("sgpa_report.pdf");
+      const result = document.getElementById('cgpaResult');
+      if (totalCredits === 0) {
+        result.innerHTML = '<p>Please enter valid semester data.</p>';
+      } else {
+        const cgpa = totalPoints / totalCredits;
+        result.innerHTML = `<h3>📊 CGPA: ${cgpa.toFixed(2)}</h3>`;
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('Service Worker registered', reg))
+          .catch(err => console.error('SW registration failed', err));
+      });
     }
   </script>
 </body>
+
 </html>
